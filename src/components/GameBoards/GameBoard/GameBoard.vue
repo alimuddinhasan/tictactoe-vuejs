@@ -1,5 +1,5 @@
 <template>
-  <li :class="['btn', 'span1', selected && `btn-${selected.color}`].join(' ')" @click="$emit('onClick')">{{ selected ? selected.label : '+' }}</li>
+  <li :class="['btn', 'span1', selected && `disable btn-${selected.color}`].join(' ')" @click="$emit('onClick')">{{ selected ? selected.label : '+' }}</li>
 </template>
 
 <script>
@@ -14,11 +14,14 @@ export default {
       default: null
     }
   },
+  mounted () {
+  },
   data () {
     return {
     }
   },
   methods: {
+    
   }
 }
 </script>
@@ -26,7 +29,7 @@ export default {
 <style lang="scss" scoped>
 .disable {
   text-transform: uppercase;
-  font-size: 30px;
+  // font-size: 30px;
   font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
