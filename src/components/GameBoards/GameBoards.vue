@@ -63,7 +63,7 @@ export default {
           if (this.isGameOver(matrix, row, col)) {
             this.$emit('onGameOver', data)
             this.winner = data
-            alert('MENANG', data)
+            alert(`${data.label.toUpperCase} wins`)
           }
       
           let newTurnIndex = this.$store.getters['game_turn/getTurnIndex'] + 1
