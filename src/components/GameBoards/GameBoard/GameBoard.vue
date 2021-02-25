@@ -1,5 +1,5 @@
 <template>
-  <li class="btn span1">{{ text }}</li>
+  <li :class="['btn', 'span1', selected && `btn-${selected.color}`].join(' ')" @click="$emit('onClick')">{{ selected ? selected.label : '+' }}</li>
 </template>
 
 <script>
@@ -8,6 +8,10 @@ export default {
     text: {
       type: String,
       default: '+'
+    },
+    selected: {
+      type: Object,
+      default: null
     }
   },
   data () {

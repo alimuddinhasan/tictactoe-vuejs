@@ -1,31 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import auth from './auth'
-import authentication from './authentication'
-import filter from './filter'
+import game_turn from './game_turn'
 Vue.use(Vuex)
 
-/*
- * If not building with SSR mode, you can
- * directly export the Store instantiation;
- *
- * The function below can be async too; either use
- * async/await or return a Promise which resolves
- * with the Store instance.
- */
-
-export default function (/* { ssrContext } */) {
+export default function () {
   const Store = new Vuex.Store({
     modules: {
-      auth,
-      authentication,
-      filter
+      game_turn
     },
 
     // enable strict mode (adds overhead!)
     // for dev mode only
-    strict: process.env.DEBUGGING
+    strict: process.env.NODE_ENV !== 'production'
   })
 
   return Store

@@ -5,7 +5,7 @@
         <h1 class="span3">Tic Tac Toe</h1>
         <ScoreBoards :players="players" />
       </div>
-      <GameBoards :size="size" />
+      <GameBoards :size="size" :players="players" />
       <div class="clr">&nbsp;</div>
       <div class="row">
         <a href="#" id="reset" class="btn-success btn span3">Restart</a>
@@ -23,6 +23,9 @@ export default {
   components: {
     GameBoards,
     ScoreBoards
+  },
+  mounted () {
+    this.$store.dispatch('game_turn/submitGameTurn', this.players[0])
   },
   data () {
     return {

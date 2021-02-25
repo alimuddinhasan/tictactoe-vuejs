@@ -1,6 +1,6 @@
 <template>
   <div class="input-prepend input-append">
-    <span class="add-on win_text">{{ name }} won</span>
+    <span class="add-on win_text">{{ name.toUpperCase() }} won</span>
     <strong id="o_win" class="win_times add-on">{{ score }}</strong>
     <span class="add-on">time(s)</span>
   </div>
