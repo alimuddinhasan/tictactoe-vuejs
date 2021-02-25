@@ -46,7 +46,6 @@ export default {
       }
     },
     restartHandler () {
-      console.log('MASUK SINI')
       this.$refs.gameBoards.initialize()
     }
   }

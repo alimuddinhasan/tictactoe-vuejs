@@ -23,29 +23,18 @@ export default {
     }
   },
   mounted () {
-    // for (let row = 0; row < this.size; row++) {
-    //   this.gameMatrix.push([])
-      
-    //   // Initiation of diagonal index value
-    //   this.diagonals[0].push([row,row])
-    //   this.diagonals[1].push([row, (this.size - 1 - row)])
-
-    //   for (let col = 0; col < this.size; col++) {
-    //     this.gameMatrix[row].push(null)
-    //   }
-    // }
-
     this.initialize()
   },
   data () {
     return {
       gameMatrix: [],
-      diagonals: [[], []]
+      diagonals: [[], []],
+      winner: null
     }
   },
   methods: {
     initialize () {
-      console.log('HALOO')
+      this.winner = null
       this.gameMatrix = []
       for (let row = 0; row < this.size; row++) {
         this.gameMatrix.push([])
@@ -60,27 +49,40 @@ export default {
       }
     },
     boardClicked (row, col) {
-      console.log('ROW COL', row, col)
       const data = this.$store.getters['game_turn/getGameTurn']
 
       const matrix = JSON.parse(JSON.stringify(this.gameMatrix))
-      console.log('matrix', matrix)
-      if (!matrix[row][col]) {
-        matrix[row][col] = data
-        this.gameMatrix = matrix
-        if (this.isGameOver(matrix, row, col)) {
-          this.$emit('onGameOver', data)
-          alert('MENANG', data)
-        }
-    
-        let newTurnIndex = this.$store.getters['game_turn/getTurnIndex'] + 1
-        if (newTurnIndex > this.players.length - 1) newTurnIndex = 0
 
-        this.$store.dispatch('game_turn/submitTurnIndex', newTurnIndex)
-        this.$store.dispatch('game_turn/submitGameTurn', this.players[newTurnIndex])
-        return true
+      // Check if still don't have the winner
+      if (!this.winner) {
+        if (!matrix[row][col]) {
+          matrix[row][col] = data
+          this.gameMatrix = matrix
+          if (this.isGameOver(matrix, row, col)) {
+            this.$emit('onGameOver', data)
+            this.winner = data
+            alert('MENANG', data)
+          }
+      
+          let newTurnIndex = this.$store.getters['game_turn/getTurnIndex'] + 1
+          if (newTurnIndex > this.players.length - 1) newTurnIndex = 0
+  
+          this.$store.dispatch('game_turn/submitTurnIndex', newTurnIndex)
+          this.$store.dispatch('game_turn/submitGameTurn', this.players[newTurnIndex])
+          return true
+        } else {
+          // Check if still have null in the matrix
+          if (this.gameMatrix.flat().some(doc => doc === null)) {
+            alert('Already selected')
+          } else {
+            alert('Its a tie. It will restart.')
+            this.initialize()
+          }
+          return false
+        }
       } else {
-        alert('Already selected')
+        alert(`${this.winner.label.toUpperCase()} has won the game. Start a new game`)
+        this.initialize()
         return false
       }
     },
