@@ -55,31 +55,6 @@ export default {
 
 <style scoped>
 /*******tic-tac-toe******/
-#tic-tac-toe .disable {
-  text-transform: uppercase;
-  font-size: 30px;
-  font-family: Georgia, 'Times New Roman', Times, serif;
-}
-#tic-tac-toe #game li {
-  float: left;
-  padding: 0;
-  list-style: none;
-  text-align: center;
-  margin-bottom: 20px;
-  color: #fff;
-  height: 60px;
-  line-height: 60px;
-  font-size: 40px;
-  color: #ccc;
-}
-#tic-tac-toe #game li.disable {
-  color: #fff;
-}
-#tic-tac-toe #game {
-  float: left;
-  padding: 0;
-  clear: both;
-}
 .new_span {
   width: 226px;
 }
@@ -96,15 +71,6 @@ export default {
   outline: none;
   width: 204px;
 }
-.input-prepend span.pre_text {
-  width: 55px;
-}
-.input-prepend .span1 {
-  width: 93px;
-}
-.input-prepend {
-  margin-bottom: 10px;
-}
 .clr {
   clear: both;
   height: 0;
@@ -113,24 +79,9 @@ export default {
   text-align: center;
   font-size: 28px;
 }
-#tic-tac-toe li::-moz-selection {
-  background: none;
-  color: #000;
-}
-#tic-tac-toe li::-webkit-selection {
-  background: none;
-  color: #000;
-}
 #tic-tac-toe {
   width: 220px;
   margin: 0 auto;
-}
-.input-append .win_times {
-  background: #fff;
-  width: 101px;
-}
-.input-append .win_text {
-  width: 52px;
 }
 /*******tic-tac-toe END******/
 
