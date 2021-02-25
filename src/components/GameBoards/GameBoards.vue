@@ -23,17 +23,19 @@ export default {
     }
   },
   mounted () {
-    for (let row = 0; row < this.size; row++) {
-      this.gameMatrix.push([])
+    // for (let row = 0; row < this.size; row++) {
+    //   this.gameMatrix.push([])
       
-      // Initiation of diagonal index value
-      this.diagonals[0].push([row,row])
-      this.diagonals[1].push([row, (this.size - 1 - row)])
+    //   // Initiation of diagonal index value
+    //   this.diagonals[0].push([row,row])
+    //   this.diagonals[1].push([row, (this.size - 1 - row)])
 
-      for (let col = 0; col < this.size; col++) {
-        this.gameMatrix[row].push(null)
-      }
-    }
+    //   for (let col = 0; col < this.size; col++) {
+    //     this.gameMatrix[row].push(null)
+    //   }
+    // }
+
+    this.initialize()
   },
   data () {
     return {
@@ -42,6 +44,21 @@ export default {
     }
   },
   methods: {
+    initialize () {
+      console.log('HALOO')
+      this.gameMatrix = []
+      for (let row = 0; row < this.size; row++) {
+        this.gameMatrix.push([])
+        
+        // Initiation of diagonal index value
+        this.diagonals[0].push([row,row])
+        this.diagonals[1].push([row, (this.size - 1 - row)])
+
+        for (let col = 0; col < this.size; col++) {
+          this.gameMatrix[row].push(null)
+        }
+      }
+    },
     boardClicked (row, col) {
       console.log('ROW COL', row, col)
       const data = this.$store.getters['game_turn/getGameTurn']

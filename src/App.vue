@@ -5,10 +5,10 @@
         <h1 class="span3">Tic Tac Toe</h1>
         <ScoreBoards :players="players" />
       </div>
-      <GameBoards :size="size" :players="players" />
+      <GameBoards ref="gameBoards" :size="size" :players="players" @onGameOver="gameOverHandler" />
       <div class="clr">&nbsp;</div>
       <div class="row">
-        <a href="#" id="reset" class="btn-success btn span3">Restart</a>
+        <a href="#" id="reset" class="btn-success btn span3" @click="restartHandler">Restart</a>
       </div>
     </div>
   </div>
@@ -34,6 +34,20 @@ export default {
         { label: 'o', color: 'primary', score: 0 },
         { label: 'x', color: 'info', score: 0 }
       ]
+    }
+  },
+  methods: {
+    gameOverHandler (winner) {
+      if (winner) {
+        const newPlayer = this.players.map(player => {
+          return player.label === winner.label ? { ...player, score: player.score + 1 } : { ...player }
+        })
+        this.players = newPlayer
+      }
+    },
+    restartHandler () {
+      console.log('MASUK SINI')
+      this.$refs.gameBoards.initialize()
     }
   }
 }
