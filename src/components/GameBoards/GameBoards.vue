@@ -1,9 +1,11 @@
 <template>
   <ul class="row" id="game">
     <template v-for="(row) in size">
-      <template v-for="(col) in size">
-        <GameBoard @onClick="boardClicked(row - 1, col - 1)" :selected="gameMatrix[row - 1] ? gameMatrix[row - 1][col - 1] : null" :key="`${row - 1}_${col - 1}`" />
-      </template>
+      <div :key="row">
+        <template v-for="(col) in size">
+          <GameBoard @onClick="boardClicked(row - 1, col - 1)" :selected="gameMatrix[row - 1] ? gameMatrix[row - 1][col - 1] : null" :key="`${row - 1}_${col - 1}`" />
+        </template>
+      </div>
     </template>
   </ul>
 </template>

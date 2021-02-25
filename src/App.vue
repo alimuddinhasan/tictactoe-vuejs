@@ -1,7 +1,7 @@
 <template>
   <div id="tic-tac-toe">
-    <div class="span3 new_span">
-      <div class="row">
+    <!-- <div class="span3 new_span"> -->
+      <div class="row header">
         <h1 class="span3">Tic Tac Toe</h1>
         <ScoreBoards :players="players" />
       </div>
@@ -10,7 +10,7 @@
       <div class="row">
         <a href="#" id="reset" class="btn-success btn span3" @click="restartHandler">Restart</a>
       </div>
-    </div>
+    <!-- </div> -->
   </div>
 </template>
 
@@ -79,8 +79,19 @@ export default {
   font-size: 28px;
 }
 #tic-tac-toe {
-  width: 220px;
+  display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	align-items: center;
+	align-content: center;
+
+  width: 90%;
   margin: 0 auto;
+}
+.header {
+  display: flex;
+	flex-direction: column;
 }
 /*******tic-tac-toe END******/
 
