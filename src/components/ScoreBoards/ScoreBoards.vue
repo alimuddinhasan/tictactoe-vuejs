@@ -1,22 +1,21 @@
 <template>
   <div class="span3">
-    <!-- <template > -->
-      <ScoreBoard v-for="(player, index) in players" :key="index" :name="player.label" :score="player.score" />
-    <!-- </template> -->
+    <ScoreBoard v-for="(player, index) in players" :key="index" :name="player.label" :score="player.score" />
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import ScoreBoard from './ScoreBoard/ScoreBoard'
 
 export default {
   components: {
     ScoreBoard
   },
-  props: {
-    players: {
-      type: Array
-    }
-  }
+  computed: {
+    ...mapGetters({
+      players: 'players/getPlayers'
+    })
+  },
 }
 </script>

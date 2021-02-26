@@ -3,9 +3,9 @@
     <!-- <div class="span3 new_span"> -->
       <div class="row header">
         <h1 class="span3">Tic Tac Toe</h1>
-        <ScoreBoards :players="players" />
+        <ScoreBoards />
       </div>
-      <GameBoards ref="gameBoards" :size="size" :players="players" @onGameOver="gameOverHandler" />
+      <GameBoards ref="gameBoards" :size="size" @onGameOver="gameOverHandler" />
       <div class="clr">&nbsp;</div>
       <div class="row">
         <a href="#" id="reset" class="btn-success btn span3" @click="restartHandler">Restart</a>
@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import GameBoards from './components/GameBoards/GameBoards'
 import ScoreBoards from './components/ScoreBoards/ScoreBoards'
 
@@ -25,15 +27,20 @@ export default {
     ScoreBoards
   },
   mounted () {
-    this.$store.dispatch('game_turn/submitGameTurn', this.players[0])
+    const players = [
+      { label: 'o', color: 'primary', score: 0, active: true },
+      { label: 'x', color: 'info', score: 0 }
+    ]
+    this.$store.dispatch('players/submitPlayers', players)
+  },
+  computed: {
+    ...mapGetters({
+      players: 'players/getPlayers'
+    })
   },
   data () {
     return {
-      size: 3,
-      players: [
-        { label: 'o', color: 'primary', score: 0 },
-        { label: 'x', color: 'info', score: 0 }
-      ]
+      size: 3
     }
   },
   methods: {
@@ -42,7 +49,8 @@ export default {
         const newPlayer = this.players.map(player => {
           return player.label === winner.label ? { ...player, score: player.score + 1 } : { ...player }
         })
-        this.players = newPlayer
+        // this.players = newPlayer
+        this.$store.dispatch('players/submitPlayers', newPlayer)
       }
     },
     restartHandler () {

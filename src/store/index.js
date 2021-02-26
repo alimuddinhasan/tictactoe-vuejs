@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import game_turn from './game_turn'
+import players from './players'
 Vue.use(Vuex)
 
 export default function () {
   const Store = new Vuex.Store({
     modules: {
-      game_turn
+      players
     },
 
     // enable strict mode (adds overhead!)

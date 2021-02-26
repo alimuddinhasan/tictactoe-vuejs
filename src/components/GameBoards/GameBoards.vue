@@ -11,7 +11,10 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import GameBoard from './GameBoard/GameBoard'
+
 export default {
   components: {
     GameBoard
@@ -20,12 +23,17 @@ export default {
     size: {
       type: Number
     },
-    players: {
-      type: Array
-    }
+    // players: {
+    //   type: Array
+    // }
   },
   mounted () {
     this.initialize()
+  },
+  computed: {
+    ...mapGetters({
+      players: 'players/getPlayers'
+    })
   },
   data () {
     return {
@@ -51,26 +59,33 @@ export default {
       }
     },
     boardClicked (row, col) {
-      const data = this.$store.getters['game_turn/getGameTurn']
+
+      // Get the index of active player
+      const playerIndex = this.players.findIndex(player => player.active)
+      const player = this.players[playerIndex]
 
       const matrix = JSON.parse(JSON.stringify(this.gameMatrix))
 
       // Check if still don't have the winner
       if (!this.winner) {
         if (!matrix[row][col]) {
-          matrix[row][col] = data
+          matrix[row][col] = player
           this.gameMatrix = matrix
           if (this.isGameOver(matrix, row, col)) {
-            this.$emit('onGameOver', data)
-            this.winner = data
-            alert(`${data.label.toUpperCase} wins`)
+            this.$emit('onGameOver', player)
+            this.winner = player
+            alert(`${player.label.toUpperCase()} wins`)
           }
       
-          let newTurnIndex = this.$store.getters['game_turn/getTurnIndex'] + 1
+          let newTurnIndex = playerIndex + 1
+          // Check if new index is more than players length
           if (newTurnIndex > this.players.length - 1) newTurnIndex = 0
-  
-          this.$store.dispatch('game_turn/submitTurnIndex', newTurnIndex)
-          this.$store.dispatch('game_turn/submitGameTurn', this.players[newTurnIndex])
+
+          const newPlayers = this.players.map((player, index) => {
+            return index === newTurnIndex ? {...player, active: true} : {...player, active: false}
+          })
+
+          this.$store.dispatch('players/submitPlayers', newPlayers)
           return true
         } else {
           // Check if still have null in the matrix
