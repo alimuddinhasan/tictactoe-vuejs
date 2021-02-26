@@ -53,7 +53,8 @@ export default {
         this.$store.dispatch('players/submitPlayers', newPlayer)
       }
     },
-    restartHandler () {
+    restartHandler (e) {
+      e.preventDefault()
       this.$refs.gameBoards.initialize()
     }
   }

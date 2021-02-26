@@ -22,10 +22,7 @@ export default {
   props: {
     size: {
       type: Number
-    },
-    // players: {
-    //   type: Array
-    // }
+    }
   },
   mounted () {
     this.initialize()
@@ -46,6 +43,7 @@ export default {
     initialize () {
       this.winner = null
       this.gameMatrix = []
+      
       for (let row = 0; row < this.size; row++) {
         this.gameMatrix.push([])
         
