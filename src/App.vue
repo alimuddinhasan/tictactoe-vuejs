@@ -8,6 +8,7 @@
     <div class="row header" v-show="showSettingForm">
       <label>Size</label>
       <input type="text" v-model="sizeSetting" class="setting-input">
+      <span v-if="isFieldError('sizeSetting')"  class="text-error">{{ validate('sizeSetting') }}</span>
       <a href="#" class="btn-default btn" @click="cancelUpdateSize">Cancel</a>
       <a href="#" class="btn-primary btn" @click="updateSize">Set and Start!</a>
     </div>
@@ -24,13 +25,25 @@
 </template>
 
 <script>
+import { validationMixin } from 'vuelidate'
+import { required, numeric, minValue, integer } from 'vuelidate/lib/validators'
 import { mapGetters } from 'vuex'
+import _ from 'lodash'
 
 import GameBoards from './components/GameBoards/GameBoards'
 import ScoreBoards from './components/ScoreBoards/ScoreBoards'
 
 export default {
   name: 'App',
+  mixins: [validationMixin],
+  validations: {
+    sizeSetting: {
+      required,
+      numeric,
+      minValue: minValue(2),
+      integer
+    }
+  },
   components: {
     GameBoards,
     ScoreBoards
@@ -62,8 +75,12 @@ export default {
     },
     updateSize (e) {
       e.preventDefault()
-      this.size = Number(this.sizeSetting)
-      this.showSettingForm = false
+      this.$v.$touch()
+
+      if (!this.$v.$invalid) {
+        this.size = Number(this.sizeSetting)
+        this.showSettingForm = false
+      }
     },
     gameOverHandler (winner) {
       if (winner) {
@@ -83,7 +100,16 @@ export default {
         e.preventDefault()
       }
       this.$refs.gameBoards.initialize()
-    }
+    },
+    validate (field) {
+      if (_.get(this.$v, field)?.required === false) return 'Field is required'
+      if (_.get(this.$v, field)?.numeric === false) return 'Must be a number'
+      if (_.get(this.$v, field)?.minValue === false) return 'Must be higher than 1'
+      if (_.get(this.$v, field)?.integer === false) return 'Must be an integer'
+    },
+    isFieldError (field) {
+      return _.get(this.$v, field)?.$error
+    },
   }
 }
 </script>

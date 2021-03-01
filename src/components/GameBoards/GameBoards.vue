@@ -20,7 +20,7 @@ export default {
     GameBoard
   },
   watch: {
-    size (to, from) {
+    size () {
       this.initialize()
     }
   },
