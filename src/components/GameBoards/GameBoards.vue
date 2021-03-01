@@ -19,6 +19,11 @@ export default {
   components: {
     GameBoard
   },
+  watch: {
+    size (to, from) {
+      this.initialize()
+    }
+  },
   props: {
     size: {
       type: Number

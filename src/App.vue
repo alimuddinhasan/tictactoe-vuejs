@@ -1,16 +1,25 @@
 <template>
   <div id="tic-tac-toe">
-    <!-- <div class="span3 new_span"> -->
-      <div class="row header">
-        <h1 class="span3">Tic Tac Toe</h1>
-        <ScoreBoards />
-      </div>
-      <GameBoards ref="gameBoards" :size="size" @onGameOver="gameOverHandler" />
-      <div class="clr">&nbsp;</div>
-      <div class="row">
-        <a href="#" id="reset" class="btn-success btn span3" @click="restartHandler">Restart</a>
-      </div>
-    <!-- </div> -->
+    <div class="row header">
+      <h1 class="span3">Tic Tac Toe</h1>
+      <a v-if="!showSettingForm" class="btn btn-mini span3 btn-setting" href="#" @click="showSettingHandler"><i class="icon-cog"></i> Setting</a>
+
+    </div>
+    <div class="row header" v-show="showSettingForm">
+      <label>Size</label>
+      <input type="text" v-model="sizeSetting" class="setting-input">
+      <a href="#" class="btn-default btn" @click="cancelUpdateSize">Cancel</a>
+      <a href="#" class="btn-primary btn" @click="updateSize">Set and Start!</a>
+    </div>
+    
+    <div class="row header" v-show="!showSettingForm">
+      <ScoreBoards />
+    </div>
+    <GameBoards ref="gameBoards" :size="size" @onGameOver="gameOverHandler" v-show="!showSettingForm" />
+    <div class="clr" v-show="!showSettingForm">&nbsp;</div>
+    <div class="row" v-show="!showSettingForm">
+      <a href="#" id="reset" class="btn-success btn span3" @click="restartHandler">Restart</a>
+    </div>
   </div>
 </template>
 
@@ -40,21 +49,39 @@ export default {
   },
   data () {
     return {
-      size: 3
+      size: 3,
+      sizeSetting: null,
+      showSettingForm: false
     }
   },
   methods: {
+    cancelUpdateSize (e) {
+      e.preventDefault()
+      this.sizeSetting = null
+      this.showSettingForm = false
+    },
+    updateSize (e) {
+      e.preventDefault()
+      this.size = Number(this.sizeSetting)
+      this.showSettingForm = false
+    },
     gameOverHandler (winner) {
       if (winner) {
         const newPlayer = this.players.map(player => {
           return player.label === winner.label ? { ...player, score: player.score + 1 } : { ...player }
         })
-        // this.players = newPlayer
         this.$store.dispatch('players/submitPlayers', newPlayer)
       }
     },
-    restartHandler (e) {
+    showSettingHandler (e) {
       e.preventDefault()
+      this.sizeSetting = this.size
+      this.showSettingForm = true
+    },
+    restartHandler (e) {
+      if (e) {
+        e.preventDefault()
+      }
       this.$refs.gameBoards.initialize()
     }
   }
@@ -95,12 +122,23 @@ export default {
 	align-items: center;
 	align-content: center;
 
-  width: 90%;
+  /* width: 90%; */
   margin: 0 auto;
 }
 .header {
   display: flex;
 	flex-direction: column;
+}
+
+.btn-setting {
+  margin-bottom: 2em;
+}
+
+.setting-input {
+  /* width: 100%; */
+  text-align: center;
+  font-size: 1.2em;
+  padding: .2em;
 }
 /*******tic-tac-toe END******/
 
